@@ -19,3 +19,9 @@ header.style.backgroundColor = 'red';
 headerTitles.textContent = 'hello';
 headerTitles.innerText = 'very good';
 header.style.border = 'solid 3px #000';
+var item = document.getElementsByClassName('list-group-item');
+item[2].style.backgroundColor = 'green';
+for(let i =0; i<item.length; i++) {
+    item[i].style.fontWeight = 'bold';
+}
+
