@@ -43,52 +43,125 @@
 // for (let i =0; i<odd.length; i++) {
 //     odd[i].style.backgroundColor = 'green';
 // }
-var itemList = document.querySelector('#items');
+// var itemList = document.querySelector('#items');
+//
+// //parent node
+// console.log(itemList.parentNode);
+// console.log(itemList.parentNode.parentNode.parentNode);
+//
+// // parent element
+// console.log(itemList.parentElement);
+// itemList.parentElement.style.backgroundColor = '#f4f4f4';
+//
+// //chile nodes
+// console.log(itemList.childNodes);
+//
+// //childern
+// console.log(itemList.children);
+// console.log(itemList.children[1].style.color);
+//
+// //firstchile
+// console.log(itemList.firstChild);
+//
+// //first element child
+// console.log(itemList.firstElementChild.textContent);
+//
+// //last child element
+// console.log(itemList.lastElementChild);
+//
+// //next sibbling
+// console.log(itemList.nextSibling);
+// console.log(itemList.nextElementSibling);
+// ///there should be sibbling in first place
+//
+// //previous sibling
+// console.log(itemList.previousElementSibling);
+//
+// //create element
+// var newDiv = document.createElement('div');
+// console.log(newDiv);
+// newDiv.className = 'hello';
+// newDiv.id = 'hello1';
+// newDiv.setAttribute('title','hello');
+// var newDivText = document.createTextNode('hello world');
+// newDiv.appendChild(newDivText);
+//
+// const headerTitle = document.querySelector('#header-title');
+// headerTitle.insertAdjacentHTML('beforebegin', '<p>Hello</p>');
+//
+// const itemsList = document.querySelector('#items');
+// const firstItem = itemsList.firstElementChild;
+// firstItem.insertAdjacentHTML('beforebegin', '<li class="list-group-item">Hello Item 1</li>');
+var form = document.getElementById('addForm');
+var itemList = document.getElementById('items');
+var filter = document.getElementById('filter');
 
-//parent node
-console.log(itemList.parentNode);
-console.log(itemList.parentNode.parentNode.parentNode);
+// Form submit event
+form.addEventListener('submit', addItem);
+// Delete event
+itemList.addEventListener('click', removeItem);
+// Filter event
+filter.addEventListener('keyup', filterItems);
 
-// parent element
-console.log(itemList.parentElement);
-itemList.parentElement.style.backgroundColor = '#f4f4f4';
+// Add item
+function addItem(e){
+    e.preventDefault();
 
-//chile nodes
-console.log(itemList.childNodes);
+    // Get input value
+    var newItem = document.getElementById('item').value;
 
-//childern
-console.log(itemList.children);
-console.log(itemList.children[1].style.color);
+    // Create new li element
+    var li = document.createElement('li');
+    // Add class
+    li.className = 'list-group-item';
+    // Add text node with input value
+    li.appendChild(document.createTextNode(newItem));
 
-//firstchile
-console.log(itemList.firstChild);
+    // Create del button element
+    var deleteBtn = document.createElement('button');
+    // Create edit button element
+    var editBtn = document.createElement('button');
 
-//first element child
-console.log(itemList.firstElementChild.textContent);
+    // Add classes to del button
+    deleteBtn.className = 'btn btn-danger btn-sm float-right delete';
+    editBtn.className = 'btn btn-sm btn-primary float-right';
 
-//last child element
-console.log(itemList.lastElementChild);
+    // Append text node
+    deleteBtn.appendChild(document.createTextNode('X'));
+    editBtn.appendChild(document.createTextNode(':'));
 
-//next sibbling
-console.log(itemList.nextSibling);
-console.log(itemList.nextElementSibling);
-///there should be sibbling in first place
+    // Append button to li
+    li.appendChild(deleteBtn);
+    li.appendChild(editBtn);
 
-//previous sibling
-console.log(itemList.previousElementSibling);
+    // Append li to list
+    itemList.appendChild(li);
 
-//create element
-var newDiv = document.createElement('div');
-console.log(newDiv);
-newDiv.className = 'hello';
-newDiv.id = 'hello1';
-newDiv.setAttribute('title','hello');
-var newDivText = document.createTextNode('hello world');
-newDiv.appendChild(newDivText);
+}
 
-const headerTitle = document.querySelector('#header-title');
-headerTitle.insertAdjacentHTML('beforebegin', '<p>Hello</p>');
+// Remove item
+function removeItem(e){
+    if(e.target.classList.contains('delete')){
+        if(confirm('Are You Sure?')){
+            var li = e.target.parentElement;
+            itemList.removeChild(li);
+        }
+    }
+}
 
-const itemsList = document.querySelector('#items');
-const firstItem = itemsList.firstElementChild;
-firstItem.insertAdjacentHTML('beforebegin', '<li class="list-group-item">Hello Item 1</li>');
+// Filter Items
+function filterItems(e){
+    // convert text to lowercase
+    var text = e.target.value.toLowerCase();
+    // Get lis
+    var items = itemList.getElementsByTagName('li');
+    // Convert to an array
+    Array.from(items).forEach(function(item){
+        var itemName = item.firstChild.textContent;
+        if(itemName.toLowerCase().indexOf(text) != -1){
+            item.style.display = 'block';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
